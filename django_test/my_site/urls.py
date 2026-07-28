@@ -22,4 +22,13 @@ urlpatterns = [
     path('hello',views.hello),
     path('inf_out/<str:name>/<int:age>',views.inf_out),
     re_path(r'^(?P<x>\d+)/112/(?P<y>\d+)/?$',views.postion),
+    path('time',views.time),
+    path('api',views.api_info),
+    path('file_page',views.file_page),
+    path("download/<str:file_name>", views.file, name="file"),
+    path("back_first",views.back_first,name = "first"),
+    path("page_2006",views.page_2006),
+    path("room/<str:name>",views.room,name="room"),
+    path("index_redirect",views.index_redirect),
+
 ]

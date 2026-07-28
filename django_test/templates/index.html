@@ -8,16 +8,23 @@
         body{
             background: linear-gradient(to right, red,  blue );
         }
-        span{
-            font-size: 30px;
-        }
         .title{
             text-align: center;
-
+            font-size: 30px;
         }
+
     </style>
 </head>
 <body>
-    <div class="title"><span>hello world</span></div>
+    <div class="title">
+        <h1>HttpResponse 文件下载示例</h1>
+        <h2>点击下面链接下载文件</h2>
+    </div>
+    
+    <ul>
+        <li>
+            <a href="{% url 'file' 'txt.txt' %}">下载 txt.txt</a>
+        </li>
+    </ul>
 </body>
 </html>
