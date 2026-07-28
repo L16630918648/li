@@ -30,5 +30,6 @@ urlpatterns = [
     path("page_2006",views.page_2006),
     path("room/<str:name>",views.room,name="room"),
     path("index_redirect",views.index_redirect),
+    path("page_GET",views.page_GET),
 
 ]

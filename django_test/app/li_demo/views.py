@@ -11,6 +11,13 @@ import os
 def room(request, name):
     return HttpResponse(f"<h1>这里是{name}的个人空间</h1>")
 
+def page_GET(request):
+    name = request.GET.getlist("name","None")
+    age = request.GET.get("age","None")
+    sex = request.GET.get("sex","None")
+    txt = f"<div>姓名:{name}<br>年龄:{age}<br>性别:{sex}<div>"
+    return HttpResponse(txt)
+
 def index_redirect(request):
     print("正在跳转")
     return redirect(reverse("room", args=["Li"]))
