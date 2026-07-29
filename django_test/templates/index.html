@@ -17,14 +17,19 @@
 </head>
 <body>
     <div class="title">
-        <h1>HttpResponse 文件下载示例</h1>
-        <h2>点击下面链接下载文件</h2>
+        <h1>HttpResponse 示例</h1>
     </div>
     
+    <form action="{% url 'file_page' %}" method="post" enctype="multipart/form-data">
+        <input type="text" name="title">
+        <input type="file" name="myfile">
+        <input type="submit" value="提交">
+    </form>
+
     <ul>
-        <li>
-            <a href="{% url 'file' 'txt.txt' %}">下载 txt.txt</a>
-        </li>
+        <li><a href="{% url 'file_download' 'txt.txt' %}">下载 txt.txt</a></li>
+        <li><a href="{% url 'file_download' '1.jpg' %}">下载 图图</a></li>
+
     </ul>
 </body>
 </html>

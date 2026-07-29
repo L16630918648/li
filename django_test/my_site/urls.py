@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, re_path
-from li_demo import views
+from django.conf import settings
+from django.conf.urls.static import static
+from app.li_demo import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello',views.hello),
@@ -24,12 +26,14 @@ urlpatterns = [
     re_path(r'^(?P<x>\d+)/112/(?P<y>\d+)/?$',views.postion),
     path('time',views.time),
     path('api',views.api_info),
-    path('file_page',views.file_page),
-    path("download/<str:file_name>", views.file, name="file"),
+    path('file_page',views.file_page,name = "file_page"),
+    path("download/<str:file_name>", views.file_download, name="file_download"),
     path("back_first",views.back_first,name = "first"),
     path("page_2006",views.page_2006),
     path("room/<str:name>",views.room,name="room"),
     path("index_redirect",views.index_redirect),
     path("page_GET",views.page_GET),
+    path("if_for_page",views.if_for),
 
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

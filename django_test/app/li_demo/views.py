@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse,HttpResponseRedirect
+from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from django.urls import reverse
 import datetime
@@ -8,6 +9,13 @@ import os
 
 
 # Create your views here.
+def if_for(request):
+    dict = {
+        "list" : ["Bob","John","Alice"],
+        "score" :45,
+    }
+    return render(request,"if_for.html",dict)
+
 def room(request, name):
     return HttpResponse(f"<h1>这里是{name}的个人空间</h1>")
 
@@ -53,11 +61,23 @@ def api_info(request):
     json_info = json.dumps(data, ensure_ascii=False)
     return HttpResponse(json_info,content_type="application/json;charset=utf-8",status=200)
 
+@csrf_exempt
 def file_page(request):
-    return render(request, 'index.html')
+    if request.method == "GET":
+        return render(request, 'index.html')
+    elif request.method == 'POST':
+        file = request.FILES["myfile"]
+        print(F"上传文件名是：{file.name}")
+        print(f"文件的字节大小：{file.size}")
+        filename = os.path.join(settings.MEDIA_ROOT, file.name)
+        with open(filename, "wb") as f:
+            for chunk in file.chunks():
+            # 将数据写入到内存中
+                f.write(chunk)
+        return HttpResponse('接受文件：' + file.name + "成功")
 
 
-def file(request, file_name):
+def file_download(request, file_name):
     file_path = os.path.join(settings.BASE_DIR, 'media', file_name)
 
     if not os.path.exists(file_path):
