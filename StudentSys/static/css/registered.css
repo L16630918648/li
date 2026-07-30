@@ -1,0 +1,117 @@
+/* 根目录static/css/registered.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif
+}
+
+body {
+    background: #f5f7fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 32px
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+    font-weight: 600
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    color: #555;
+    font-size: 14px
+}
+
+input, select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #d0d7e5;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: .2s
+}
+
+input:focus, select:focus {
+    border-color: #4a90e2;
+    outline: none
+}
+
+.error-tip {
+    color: #e53935;
+    font-size: 12px;
+    height: 16px;
+    margin-top: 2px;
+    visibility: hidden
+}
+
+.btn {
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    padding: 12px 0;
+    width: 100%;
+    cursor: pointer;
+    transition: .2s
+}
+
+.btn:hover {
+    background: #357ac5
+}
+
+.strength-bar {
+    height: 4px;
+    border-radius: 2px;
+    margin-top: 4px;
+    background: #e0e0e0
+}
+
+.strength-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    border-radius: 2px;
+    transition: .3s
+}
+
+.weak {
+    background: #e53935
+}
+
+.medium {
+    background: #fb8c00
+}
+
+.strong {
+    background: #43a047
+}
+
+.form-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 14px;
+    color: #666
+}
+
+.form-footer a {
+    color: #4a90e2;
+    text-decoration: none
+}

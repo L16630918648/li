@@ -1,0 +1,58 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/registered.css' %}">
+    <title>学生注册系统</title>
+</head>
+
+<body>
+    <div class="card">
+        <h1> 学生登陆系统 -- 注册</h1>
+        <form id="registerForm" action="{% url 'registerApi' %}" method="post" enctype="multipart/form-data" novalidate>
+            <!-- 添加此处模板代码就不会提示 403 了 -->
+            {% csrf_token %}
+            <!-- 姓名 -->
+            <label for="name">姓名 *</label>
+            <input type="text" id="name" name="name" placeholder="请输入真实姓名" required>
+            <div class="error-tip" id="nameErr"></div>
+
+            <!-- 手机号 -->
+            <label for="phone">手机号码 *</label>
+            <input type="tel" id="phone" name="phone" placeholder="11位手机号" pattern="^1[3-9]\d{9}$" required>
+            <div class="error-tip" id="phoneErr"></div>
+
+            <!-- 邮箱 -->
+            <label for="email">邮箱 *</label>
+            <input type="email" id="email" name="email" placeholder="例：name@example.com" required>
+            <div class="error-tip" id="emailErr"></div>
+
+            <!-- 密码 -->
+            <label for="password">密码 *</label>
+            <input type="password" id="password" name="password" placeholder="长度 6-20 位，含字母+数字" minlength="6"
+                maxlength="20" required>
+            <div class="strength-bar"><span id="strengthBar"></span></div>
+            <div class="error-tip" id="pwdErr"></div>
+
+            <!-- 确认密码 -->
+            <label for="confirmPwd">确认密码 *</label>
+            <input type="password" id="confirmPwd" name="confirmPwd" required>
+            <div class="error-tip" id="confirmErr"></div>
+
+            <button type="submit" class="btn">立即注册</button>
+
+            <div class="form-footer">
+                已有账号？<a href="{% url 'login' %}">去登录</a>
+            </div>
+        </form>
+    </div>
+
+    <script src="{% static 'js/registered.js' %}"></script>
+
+</body>
+
+</html>

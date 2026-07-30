@@ -1,0 +1,39 @@
+<!-- login app应用/templates/login.html -->
+
+<!-- 写在开头：载 static 模板标签 -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>学生信息系统 - 登录</title>
+    <link rel="stylesheet" href="{% static 'css/registered.css' %}">
+</head>
+<body>
+<div class="card">
+    <h2>学生登记系统 - 登录</h2>
+
+    <form id="registerForm" action="{% url "login_api" %}" method="get" novalidate>
+        <!-- 姓名 -->
+        <label for="name">账号</label>
+        <input type="text" id="name" name="name" value="{{ userName }}" placeholder="手机/邮箱/学号" required>
+        <div class="error-tip" id="nameErr" style="visibility: visible;">{{ nameErr }}</div>
+
+        <!-- 密码 -->
+        <label for="password">密码</label>
+        <input type="password" id="password" name="password" placeholder="请输入登录密码" minlength="6"
+               maxlength="20" value="{{ pwd }}" required>
+        <div class="strength-bar"><span id="strengthBar"></span></div>
+        <div class="error-tip" id="pwdErr"></div>
+
+        <button type="submit" class="btn">登录</button>
+
+        <div class="form-footer">
+            <!-- 如果未开发完注册业务先注释掉该行 -->
+            没有账号？<a href="{% url 'registered' %}">去注册</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

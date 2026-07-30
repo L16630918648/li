@@ -1,0 +1,116 @@
+<!-- infon app应用/templates/index.html -->
+
+<!-- 写在开头：载 static 模板标签 -->
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>学生信息填写系统</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+  <div class="card">
+        <div class="card-header">
+            <h1>学生信息填写系统</h1>
+        </div>
+        <div class="card-body">
+            <form action="{% url "info_api" %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-grid">
+                    <!-- 头像上传 -->
+                    <div class="form-group full-width">
+                        <label>学生照片</label>
+                        <div class="avatar-upload">
+                            <div class="avatar-preview">
+                                {% if student_info.avatar %}
+                                    <img id="avatar-img" src="{{ student_info.avatar }}" style="display: block;" alt="Avatar">
+                                {% else %}
+                                    <img id="avatar-img" src="#" alt="Avatar">
+                                    <span class="placeholder">+</span>
+                                {% endif %}
+                            </div>
+                            <div class="avatar-actions">
+                                <label for="avatar-input" class="btn">上传照片</label>
+                                <input type="file" id="avatar-input" name="avatar" accept="image/*">
+                                <div class="avatar-hint">支持 JPG、PNG，大小不超过 2MB</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 基础信息 -->
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" readonly id="name" name="name" placeholder="请输入姓名" value="{{ student_data.name }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">性别</label>
+                        <select id="gender" name="gender" required>
+                            {% if not student_info.gender %}
+                                <option value="" disabled selected>请选择</option>
+                                <option value="male">男</option>
+                                <option value="female">女</option>
+                            {% endif %}
+                            {% if student_info.gender == "male" %}
+                                    <option value="" disabled >请选择</option>
+                                    <option value="male" selected>男</option>
+                                    <option value="female">女</option>
+                            {% endif %}
+                            {% if student_info.gender == "female" %}
+                                    <option value="" disabled >请选择</option>
+                                    <option value="male" >男</option>
+                                    <option value="female" selected>女</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birthday">出生日期</label>
+                        <input type="date" id="birthday" value="{{ student_info.birthday|date:'Y-m-d' }}" name="birthday" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="studentId">学号</label>
+                        <input type="text" readonly id="studentId" name="studentId" value="{{ student_data.student_id }}" placeholder="请输入学号" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="class">班级</label>
+                        <input type="text" id="class" value="{{ student_info.clazz }}" name="class" placeholder="如：2022级计算机1班" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">电子邮箱</label>
+                        <input type="email" id="email" name="email" value="{{ student_data.email }}" placeholder="example@mail.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">联系电话</label>
+                        <input type="tel" id="phone" name="phone" value="{{ student_data.phone }}" placeholder="请输入手机号" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="address">家庭住址</label>
+                        <textarea id="address"  name="address" placeholder="请填写详细住址">{{ student_info.address }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-submit">
+                    <button type="submit" class="btn-submit">提交信息</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+<!-- 使用 JS -->
+<script src="{% static 'js/index.js' %}"></script>
+</body>
+</html>
