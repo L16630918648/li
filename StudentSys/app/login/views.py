@@ -8,15 +8,9 @@ from django.db.models import Q
 from django.http import HttpResponseForbidden, HttpResponseServerError
 from login.models import Student
 
-
-
-
-
-
 # 注册主页
 def registered_index(request):
     return render(request, "registered.html")
-
 
 # 插入表单接口
 def registered_add(request):
@@ -47,6 +41,9 @@ def registered_add(request):
 def login(request):
     return render(request, "login.html")
 
+def login_out(request):
+    request.session.flush()
+    return redirect('login')
 
 def login_api(request):
     name = request.GET["name"]

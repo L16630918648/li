@@ -14,7 +14,7 @@
 <div class="card">
     <h2>学生登记系统 - 登录</h2>
 
-    <form id="registerForm" action="{% url "login_api" %}" method="get" novalidate>
+    <form id="registerForm" action="{% url 'login_api' %}" method="get" novalidate>
         <!-- 姓名 -->
         <label for="name">账号</label>
         <input type="text" id="name" name="name" value="{{ userName }}" placeholder="手机/邮箱/学号" required>

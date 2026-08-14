@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帖子广场</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+
+<body class="post-page">
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="brand">学生帖子广场</div>
+        </div>
+        <div class="nav-actions">
+            {% if student %}
+                <a class="nav-btn nav-btn-create" href="{% url 'create' %}">发布帖子</a>
+                <a class="nav-btn nav-btn-mine" href="{% url 'mine' %}">我的帖子</a>
+                <a class="nav-btn nav-btn-quit" href="{% url 'quit' %}">退出</a>
+            {% else %}
+                <a class="nav-btn nav-btn-login" href="{% url 'login' %}">登录</a>
+                <a class="nav-btn nav-btn-register" href="{% url 'registered' %}">注册</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="page">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post-card">
+                    <div class="post-title">{{ post.title }}</div>
+                    <div class="post-meta">
+                        作者：{{ post.author.name }}
+                        发布时间：{{ post.create_at|date:'Y-m-d H:i' }}
+                    </div>
+                    <div class="post-content">{{ post.content }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-tip">
+                当前还没有帖子，{% if student %}快去 <a href="{% url 'create' %}">发布第一条</a> 吧。{% else %}先登录后再发布。{% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

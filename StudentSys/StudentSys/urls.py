@@ -16,21 +16,21 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
-from login import views as login_views
-from info import views as info_views
+from django.shortcuts import redirect
+
+def index_redirect(request):
+    return redirect('post')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-
-    path("registered/", login_views.registered_index, name="registered"),
-    path('api/registered/add/', login_views.registered_add, name='registerApi'),
-    path('login/', login_views.login, name='login'),
-    path('api/login/', login_views.login_api, name='login_api'),
-    path("", info_views.index, name="index"),
-    path("api/info/", info_views.info_api, name="info_api"),
+    path("admin/", admin.site.urls),
+    path("", index_redirect),
+    path("", include("info.urls")),
+    path("", include("login.urls")),
+    path("", include("post.urls")),
+    
 ]
 
 # 需要在数组外边

@@ -2,7 +2,7 @@ from django.db import models
 
 from login.models import Student
 # Create your models here.
-# Create your models here.
+
 class StudentInfo(models.Model):
     GENDER_CHOICES = (
         ('male', '男'),

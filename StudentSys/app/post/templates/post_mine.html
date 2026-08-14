@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的帖子</title>
+    <link rel="stylesheet" href="{% static 'css/registered.css' %}">
+</head>
+<body class="post-mine-page">
+    <div class="topbar">
+        <div class="brand">我的帖子</div>
+        <div class="nav-actions">
+            <a class="nav-btn nav-btn-back" href="{% url 'post' %}">返回广场</a>
+            <a class="nav-btn nav-btn-create" href="{% url 'create' %}">发布新帖</a>
+        </div>
+    </div>
+
+    <div class="page">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="mine-card">
+                    <div class="mine-title">{{ post.title }}</div>
+                    <div class="mine-meta">发布时间：{{ post.create_at|date:'Y-m-d H:i' }}</div>
+                    <div class="mine-content">{{ post.content }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-tip">你还没有发布过帖子，先去发一条吧。</div>
+        {% endif %}
+    </div>
+</body>
+</html>
