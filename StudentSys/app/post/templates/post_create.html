@@ -18,16 +18,32 @@
     <div class="page">
         <div class="form-box">
             <h1 class="form-title">新建帖子</h1>
-            <form action="{% url 'push' %}" method="post">
+            <form action="{% url 'push' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="title">标题</label>
                     <input type="text" id="title" name="title" maxlength="100" placeholder="请输入帖子标题" required>
                 </div>
+
                 <div class="form-group">
                     <label for="content">内容</label>
                     <textarea id="content" name="content" placeholder="请输入帖子内容" required></textarea>
                 </div>
+
+                <div class="form-group">
+                    <label for="media_type">文件类型</label>
+                    <select id="media_type" name="media_type">
+                        <option value="image">图片</option>
+                        <option value="video">视频</option>
+                        <option value="file">文件</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="media">上传附件</label>
+                    <input type="file" id="media" name="media" accept="image/*,video/*,.pdf,.doc,.docx" multiple>
+                </div>
+
                 {% if err %}
                     <div class="err">{{ err }}</div>
                 {% endif %}
