@@ -2,6 +2,7 @@
 
 import os
 from django.urls import reverse
+from django.utils import timezone
 from utils.utils import generate_time_student_id
 from django.shortcuts import render, redirect
 from django.db.models import Q
@@ -9,6 +10,7 @@ from django.http import HttpResponseForbidden, HttpResponseServerError, JsonResp
 from django.core.mail import send_mail
 from .models import Student, Verifition
 import random, string
+from datetime import timedelta
 # 注册主页
 def registered_index(request):
     return render(request, "registered.html")
@@ -16,6 +18,16 @@ def registered_index(request):
 # 插入表单接口
 def registered_add(request):
     if request.method == "POST":
+        name=request.POST["name"],
+        phone=request.POST["phone"],
+        email=request.POST["email"],
+        password=request.POST["password"]
+        input_verification=request.POST["verification"]
+        #判断验证码：
+        now = timezone.now()
+        creat_time = Verifition.objects.get("creat_time")
+        valid_time = timedelta(minutes=5)
+        if 
         # 数据提取
         # 随机生成一个学号
         student_id = generate_time_student_id()
@@ -27,10 +39,10 @@ def registered_add(request):
         # 插入数据
         Student.objects.create(
             student_id=student_id,
-            name=request.POST["name"],
-            phone=request.POST["phone"],
-            email=request.POST["email"],
-            password=request.POST["password"],
+            name=name,
+            phone=phone,
+            email=email,
+            password=password,
         )
         # 插入成功 就直接跳到首页页了
         request.session["student_id"] = student_id

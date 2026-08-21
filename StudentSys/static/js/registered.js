@@ -37,6 +37,9 @@ form.addEventListener('submit', function (e) {
     if (!phone){
         ok = false;
         showError("phoneErr", "手机号不能为空！")
+    }else if (!/^\d{11}$/.test(phone)) {
+        ok=false;
+        showError('phoneErr','手机号格式不正确');
     }else{
         hideError("phoneErr")
     }
@@ -60,13 +63,6 @@ form.addEventListener('submit', function (e) {
         showError("pwdErr", "密码不能为空！")
     }else{
         hideError("pwdErr")
-    }
-
-    if (!/^\d{11}$/.test(phone)) {
-        ok=false;
-        showError('phoneErr','手机号格式不正确');
-    }else{
-        hideError("phoneErr")
     }
 
     if (password !== confirmPwd){
@@ -95,24 +91,31 @@ getCodeBtn.addEventListener("click", function () {
     }
 
     getCodeBtn.disabled = true;
-    getCodeBtn.textContent = "发送中...";
+
+    let countdown = 60;
+    let timer = setInterval(function(){
+        if (countdown <= 0){
+            getCodeBtn.disabled = false;
+            getCodeBtn.textContent = "获取验证码";
+            clearInterval(timer);
+        }else{
+            countdown--;
+            getCodeBtn.textContent = "倒计时:" + countdown + "s";
+        }
+    },1000);
+
 
     fetch(`/api/registered.verifition?email=${encodeURIComponent(email)}`)
         .then(response => response.json())
         .then(data => {
             if (data.code === 200) {
                 alert("验证码已发送，请检查邮箱");
-                getCodeBtn.textContent = "发送成功";
             } else {
                 showError("emailErr", data.message || "验证码发送失败");
-                getCodeBtn.disabled = false;
-                getCodeBtn.textContent = "获取验证码";
             }
         })
         .catch(error => {
             console.error(error);
             showError("emailErr", "请求失败，请检查服务器");
-            getCodeBtn.disabled = false;
-            getCodeBtn.textContent = "获取验证码";
         });
 });
