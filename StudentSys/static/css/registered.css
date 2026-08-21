@@ -39,7 +39,8 @@ label {
     font-size: 14px
 }
 
-input, select {
+input,
+select {
     width: 100%;
     padding: 10px 14px;
     border: 1px solid #d0d7e5;
@@ -48,7 +49,8 @@ input, select {
     transition: .2s
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     border-color: #4a90e2;
     outline: none
 }
@@ -288,4 +290,38 @@ body.post-mine-page .empty-tip {
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+}
+
+.code-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+/*专门用来包裹input，负责弹性伸缩*/
+.code-input-wrap {
+    flex: 1;
+}
+
+.btn-get-code {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4a90e2;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+    white-space: nowrap;
+}
+
+.btn-get-code:hover {
+    background-color: #357ac5;
+}
+
+.btn-get-code:disabled {
+    background-color: #89b4e8;
+    cursor: not-allowed;
 }

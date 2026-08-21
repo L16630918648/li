@@ -47,3 +47,8 @@ class Student(models.Model):
         verbose_name = '学生信息'
         verbose_name_plural = '学生信息'
 
+class Verifition(models.Model):
+    email = models.EmailField(unique=True)
+    verifition = models.CharField(max_length=4)
+    creat_time = models.DateField(auto_now_add=True)
+

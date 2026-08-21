@@ -41,7 +41,7 @@
                 {% for media in post.media.all %}
                     {% if media.media_type == 'image' %}
                     <div class="media-item">
-                        <img src="{{ media.file.url }}" alt="帖子图片" style="max-width: 100%; height: auto; display: block; margin-top: 12px;">
+                        <img src="{{ media.file.url }}" alt="帖子图片" style="width: 50px; height: auto; display: block; margin-top: 12px;">
                     </div>
                     {% elif media.media_type == 'video' %}
                     <div class="media-item">

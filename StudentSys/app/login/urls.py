@@ -7,4 +7,5 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path('quit/',views.login_out, name='quit'),
     path("api/login/", views.login_api, name="login_api"),
+    path("api/registered.verifition", views.email_send_code, name="verifition")
 ]

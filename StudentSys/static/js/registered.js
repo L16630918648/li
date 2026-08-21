@@ -1,5 +1,7 @@
 /* 根目录static/js/registered.js */
 const form = document.getElementById('registerForm');
+const getCodeBtn = document.getElementById("getCodeBtn");
+const emailInput = document.getElementById('email');
 
 /* 统一报错提示 */
 function showError(id, msg) {
@@ -23,6 +25,7 @@ form.addEventListener('submit', function (e) {
     let email = form.email.value;
     let password = form.password.value;
     let confirmPwd = form.confirmPwd.value;
+    let verification = form.verification.value;
 
     if (!userName){
         ok = false;
@@ -45,6 +48,12 @@ form.addEventListener('submit', function (e) {
         hideError("emailErr")
     }
 
+    if (!verification){
+        ok = false;
+        showError("verificationErr", "验证码为空")
+    }else{
+        hideError("verificationErr")
+    }
     // 密码不能为空
     if (!password || !confirmPwd){
         ok = false;
@@ -72,3 +81,38 @@ form.addEventListener('submit', function (e) {
     }
 });
 
+getCodeBtn.addEventListener("click", function () {
+    const email = emailInput.value.trim();
+
+    if (!email) {
+        showError("emailErr", "请先填写邮箱");
+        return;
+    }
+
+    if (!emailInput.checkValidity()) {
+        showError("emailErr", "邮箱格式不正确");
+        return;
+    }
+
+    getCodeBtn.disabled = true;
+    getCodeBtn.textContent = "发送中...";
+
+    fetch(`/api/registered.verifition?email=${encodeURIComponent(email)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 200) {
+                alert("验证码已发送，请检查邮箱");
+                getCodeBtn.textContent = "发送成功";
+            } else {
+                showError("emailErr", data.message || "验证码发送失败");
+                getCodeBtn.disabled = false;
+                getCodeBtn.textContent = "获取验证码";
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            showError("emailErr", "请求失败，请检查服务器");
+            getCodeBtn.disabled = false;
+            getCodeBtn.textContent = "获取验证码";
+        });
+});

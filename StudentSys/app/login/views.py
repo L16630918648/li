@@ -5,9 +5,10 @@ from django.urls import reverse
 from utils.utils import generate_time_student_id
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.http import HttpResponseForbidden, HttpResponseServerError
-from login.models import Student
-
+from django.http import HttpResponseForbidden, HttpResponseServerError, JsonResponse
+from django.core.mail import send_mail
+from .models import Student, Verifition
+import random, string
 # 注册主页
 def registered_index(request):
     return render(request, "registered.html")
@@ -80,3 +81,12 @@ def login_api(request):
         "pwd": password,
     })
 
+
+def email_send_code(request):
+    email = request.GET.get("email")
+    if not email:
+        return JsonResponse({"code": 400, "message": "邮箱为空"})
+    verifition = ''.join(random.sample(string.hexdigits, 4))
+    Verifition.objects.update_or_create(email=email, defaults={'verifition':verifition})
+    send_mail(subject="来自大学广场的验证码：",message=f"验证码:{verifition}", from_email=None, recipient_list=[email])
+    return JsonResponse({"code": 200,"message": "验证码已发送"})

@@ -69,3 +69,5 @@ def post_mine(request):
         return redirect(reverse('login'))
     posts = Post.objects.filter(author=student).prefetch_related('media').order_by('-id')
     return render(request, 'post_mine.html', {'posts': posts, 'student': student})
+
+
