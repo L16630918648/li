@@ -16,7 +16,7 @@ function hideError(id) {
 }
 
 form.addEventListener('submit', function (e) {
-    // e.preventDefault();
+    e.preventDefault();
     console.log('点击了“立即注册”');
     let ok = true;
 
@@ -27,55 +27,74 @@ form.addEventListener('submit', function (e) {
     let confirmPwd = form.confirmPwd.value;
     let verification = form.verification.value;
 
-    if (!userName){
+    if (!userName) {
         ok = false;
         showError("nameErr", "姓名不能为空！")
-    }else{
+    } else {
         hideError("nameErr")
     }
 
-    if (!phone){
+    if (!phone) {
         ok = false;
         showError("phoneErr", "手机号不能为空！")
-    }else if (!/^\d{11}$/.test(phone)) {
-        ok=false;
-        showError('phoneErr','手机号格式不正确');
-    }else{
+    } else if (!/^\d{11}$/.test(phone)) {
+        ok = false;
+        showError('phoneErr', '手机号格式不正确');
+    } else {
         hideError("phoneErr")
     }
 
-    if (!email){
+    if (!email) {
         ok = false;
         showError("emailErr", "邮箱不能为空！")
-    }else{
+    } else {
         hideError("emailErr")
     }
 
-    if (!verification){
+    if (!verification) {
         ok = false;
         showError("verificationErr", "验证码为空")
-    }else{
+    } else {
         hideError("verificationErr")
     }
     // 密码不能为空
-    if (!password || !confirmPwd){
+    if (!password || !confirmPwd) {
         ok = false;
         showError("pwdErr", "密码不能为空！")
-    }else{
+    } else {
         hideError("pwdErr")
     }
 
-    if (password !== confirmPwd){
+    if (password !== confirmPwd) {
         ok = false;
         showError("pwdErr", "密码输入不一致！")
-    }else{
+    } else {
         hideError("pwdErr")
     }
 
-    if (!ok){
-        e.preventDefault();
-    }
-});
+    if (!ok) return
+
+    fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        credentials: "same-origin",
+        headers: {
+            "X-Requested-With": "XMLHttpRequest"
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.code === 200) {
+                window.location.href = data.redirect || "/";
+                return;
+            }
+            showError(data.field || "verificationErr", data.message || "提交失败");
+        })
+        .catch(error => {
+            console.error(error);
+            showError("verificationErr", "请求失败，请检查服务器");
+        });
+    });
 
 getCodeBtn.addEventListener("click", function () {
     const email = emailInput.value.trim();
@@ -93,16 +112,16 @@ getCodeBtn.addEventListener("click", function () {
     getCodeBtn.disabled = true;
 
     let countdown = 60;
-    let timer = setInterval(function(){
-        if (countdown <= 0){
+    let timer = setInterval(function () {
+        if (countdown <= 0) {
             getCodeBtn.disabled = false;
             getCodeBtn.textContent = "获取验证码";
             clearInterval(timer);
-        }else{
+        } else {
             countdown--;
             getCodeBtn.textContent = "倒计时:" + countdown + "s";
         }
-    },1000);
+    }, 1000);
 
 
     fetch(`/api/registered.verifition?email=${encodeURIComponent(email)}`)
@@ -118,4 +137,4 @@ getCodeBtn.addEventListener("click", function () {
             console.error(error);
             showError("emailErr", "请求失败，请检查服务器");
         });
-});
+    });

@@ -50,5 +50,5 @@ class Student(models.Model):
 class Verifition(models.Model):
     email = models.EmailField(unique=True)
     verifition = models.CharField(max_length=4)
-    creat_time = models.DateField(auto_now_add=True)
+    creat_time = models.DateTimeField(auto_now_add=True)
 

@@ -18,24 +18,29 @@ def registered_index(request):
 # 插入表单接口
 def registered_add(request):
     if request.method == "POST":
-        name=request.POST["name"],
-        phone=request.POST["phone"],
-        email=request.POST["email"],
+        name=request.POST["name"]
+        phone=request.POST["phone"]
+        email=request.POST["email"]
         password=request.POST["password"]
         input_verification=request.POST["verification"]
-        #判断验证码：
+        v_obj = Verifition.objects.filter(email=email).first()
+        if not v_obj:
+            return JsonResponse({"code": 400,"message": "请先获取验证码"})        
+        verification = v_obj.verifition
+        #判断验证码有效性：
         now = timezone.now()
-        creat_time = Verifition.objects.get("creat_time")
+        creat_time = v_obj.creat_time
         valid_time = timedelta(minutes=5)
-        if 
-        # 数据提取
+        if now - creat_time > valid_time:
+            return JsonResponse({"code": 400, "message": "完整码过期"})
+        #验证码正确：
+        if input_verification.strip().lower() != verification.lower():
+            return JsonResponse({"code": 400, "message": "验证码错误"})
+
+        if Student.objects.filter(phone=phone).exists():
+            return JsonResponse({"code": 400, "field": "phoneErr", "message": "手机号已被注册"})
         # 随机生成一个学号
         student_id = generate_time_student_id()
-        phone = request.POST["phone"]
-        if Student.objects.filter(phone=phone).exists():
-            return render(request, "registered.html", {
-                "phoneErr": "手机号已被注册"
-            })
         # 插入数据
         Student.objects.create(
             student_id=student_id,
@@ -46,8 +51,7 @@ def registered_add(request):
         )
         # 插入成功 就直接跳到首页页了
         request.session["student_id"] = student_id
-        return redirect(reverse('index'))
-
+        return JsonResponse({"code": 200, "message": "注册成功", "redirect": reverse("index")})
     return HttpResponseForbidden()
 
 
@@ -99,6 +103,6 @@ def email_send_code(request):
     if not email:
         return JsonResponse({"code": 400, "message": "邮箱为空"})
     verifition = ''.join(random.sample(string.hexdigits, 4))
-    Verifition.objects.update_or_create(email=email, defaults={'verifition':verifition})
+    Verifition.objects.update_or_create(email=email, defaults={'verifition':verifition, 'creat_time': timezone.now()})
     send_mail(subject="来自大学广场的验证码：",message=f"验证码:{verifition}", from_email=None, recipient_list=[email])
     return JsonResponse({"code": 200,"message": "验证码已发送"})
